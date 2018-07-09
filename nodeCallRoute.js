@@ -26,40 +26,7 @@ module.exports = {
       }
     });
     server.listen(port);
-  },
-
-  makeGetRequest: function makeGetRequest(url, header, callback){
-    var parseURL = require('url').parse;
-    protocol = parseURL(url).protocol;
-    if (protocol == "http:") {
-      var request = require('http').request;
-    } else if (protocol == "https:") {
-      var request = require('https').request;
-    } else {
-      console.log("unknown protocol: '" + protocol + "'")
-    }
-  
-    var options = {
-    "hostname" : parseURL(url).hostname,
-    "port" : parseURL(url).port,
-    "path" : parseURL(url).path,
-    "method" : "GET",
-    "headers" : header
-    };
-    console.log(options)
-    var req = request(options, function (res){
-      var body = "" 
-      res.setEncoding('utf8');
-      res.on('data', function (chunk){
-        console.log(chunk)
-        body+=chunk; 
-      }).on('end', function() {
-        callback(JSON.parse(body))
-      });
-    });
-    req.end(); //finish the request
   }
-
 };
 
 function getXMLdata(data, callback){ // read the named file into a javascript object
