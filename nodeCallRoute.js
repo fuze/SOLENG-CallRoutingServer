@@ -27,9 +27,10 @@ console.log(req.headers);
         console.log("got request. Method: NOT POST")
         res.writeHead(200)
         var reqObject = fs.readFile("sample.xml", function(err, data) {
-          getXMLdata(data, function(reqObject){
+          getXMLdata(data, async function(reqObject){
             var callData = getCallData(reqObject)
-            callback(callData, function(resObject) {sendResponse(res, callData, resObject)});
+            let routingResult = await routingPromise(callData, routingFunction)
+            sendResponse(res, routingResult)
           });
         });
       }

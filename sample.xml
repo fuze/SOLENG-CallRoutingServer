@@ -1,0 +1,31 @@
+<TpnRequest>
+    <RequestId>000001</RequestId>
+    <CallInfo>
+        <TimeStamp>{current time in milliseconds}</TimeStamp>
+        <ObjectId>
+            123456
+        </ObjectId>
+        <ClidNum>
+            3454446677
+        </ClidNum>
+        <ClidName>
+            Caller ID Name
+        </ClidName>
+        <Idid>
+            Inbound DID
+        </Idid>
+        <CurContext>
+            Current Context
+        </CurContext>
+        <CurExten>
+            Current Extension
+        </CurExten>
+        <CustomAttributes>
+            <Attribute>
+                <Name>IdPin</Name>
+                <Value>0123456789</Value>
+            </Attribute>
+        </CustomAttributes>
+    </CallInfo>
+</TpnRequest>
+
