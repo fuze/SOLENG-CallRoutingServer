@@ -1,19 +1,28 @@
 module.exports = {
-  createListener: function createListener(port, callback) {
+  createListener: function createListener(port, username, password, routingFunction) {
     var http = require('http');
     var fs = require('fs');
     var querystring = require('querystring');
 
     var server = http.createServer(function(req, res) {
+console.log('server request')
+console.log(req.headers);
       if (req.method == "POST"){ //check if we are being posted to
-        console.log("got request. Method: POST")
-        req.on('data', function(data) {
-          res.writeHead(200)
-          getXMLdata(data, function(reqObject){
-            var callData = getCallData(reqObject)
-            callback(callData, function(resObject) {sendResponse(res, callData, resObject)});
+        if (verifyCredentials(req.headers.authorization, username, password)){
+          console.log("got request. Method: POST")
+          req.on('data', function(data) {
+            res.writeHead(200)
+            getXMLdata(data, async function(reqObject){
+              var callData = getCallData(reqObject)
+              let routingResult = await routingPromise(callData, routingFunction)
+              sendResponse(res, routingResult)
+            });
           });
-        });
+        } else {
+          console.log("error authenticating")
+          res.writeHead(403)
+          res.end("error while authenticating")
+        }
       } else {  //if this is a GET request, do manual testing
         console.log("got request. Method: NOT POST")
         res.writeHead(200)
@@ -26,8 +35,32 @@ module.exports = {
       }
     });
     server.listen(port);
-  }
+  },
+
 };
+
+function routingPromise (callData, routingFunction){
+  let promise = new Promise((resolve, reject) => {
+    resolve(routingFunction(callData))
+  })
+  return promise
+}
+
+function verifyCredentials (header, username, password){
+  if (username === undefined && password === undefined){
+    return true
+  }
+  if (username === undefined){username = ""}  //fixes values for when only a username or password is present
+  if (password === undefined){password = ""}
+
+  let encoded = Buffer.from(username + ":" + password).toString('base64') //encode credentails in base 64
+  console.log("Basic " + encoded + " === " + header)
+  if (header === "Basic " + encoded){
+    return true
+  } else {
+    return false
+  }
+}
 
 function getXMLdata(data, callback){ // read the named file into a javascript object
   var xml2js = require('xml2js');
@@ -62,15 +95,16 @@ function getCustomAttributes(data){ //build 2d array of custom attributes
   }
 }
 
-function sendResponse (res, callData, XMLobject) {
-  var xml = generateXML(callData, XMLobject)
+function sendResponse (res, XMLobject) {
+  var xml = generateXML(XMLobject)
   console.log(xml)
   res.end(xml)
 }
 
-function generateXML(callData, resObject) {
+function generateXML(resObject) {
   var xml2js = require('xml2js'); 
   var XMLbuilder = new xml2js.Builder();
+  return XMLbuilder.buildObject(resObject);
 /*
   var XMLobject = {}
   XMLobject.TpnResponse = {
@@ -89,9 +123,4 @@ function generateXML(callData, resObject) {
     }
   }
 */
-
-  var XMLobject = resObject
-
-  return XMLbuilder.buildObject(XMLobject);
-
 }
