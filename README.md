@@ -17,18 +17,20 @@ callRouting.createListener(8009, 'RESTusername', 'RESTpassword', processRequest)
 
 function processRequest(callData){
   response = {
-    "RequestId" : callData.requestID,
-    "CallActions" : {
-      "ObjectId" : callData.objectID,
-      "SetCallerId" : null,
-      "RouteCall" : {
-        "Ivr" : null,
-        "Exten" : null
-      },
-      "SetAttributes" : {
-        "Attribute" : {
-          "Name" : null,
-          "Value" : null
+    "TpnResponse" : {
+      "RequestId" : callData.requestID,
+      "CallActions" : {
+        "ObjectId" : callData.objectID,
+        "SetCallerId" : null,
+        "RouteCall" : {
+          "Ivr" : null,
+          "Exten" : null
+        },
+        "SetAttributes" : {
+          "Attribute" : {
+            "Name" : null,
+            "Value" : null
+          }
         }
       }
     }
