@@ -86,8 +86,8 @@ function getCustomAttributes(data){ //build 2d array of custom attributes
   var customAttributeList = data.TpnRequest.CallInfo[0].CustomAttributes
   var customAttributes = {}
   try {
-    for (i = 0; i < customAttributeList.length; i++){
-      customAttributes[customAttributeList[i].Attribute[0].Name[0]] = customAttributeList[i].Attribute[0].Value[0] //adds the atribute name and value to the customAtributes Object
+    for (i = 0; i < customAttributeList[0].Attribute.length; i++){
+      customAttributes[customAttributeList[0].Attribute[i].Name[0]] = customAttributeList[0].Attribute[i].Value[0] //adds the atribute name and value to the customAtributes Object
     }
     return customAttributes
   } catch (err) {
