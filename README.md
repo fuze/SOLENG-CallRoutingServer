@@ -40,7 +40,7 @@ const config = {
 //  user: 'RESTusername',
 //  password: 'RESTpassword'
 //}
-callRouting.createListener(8009, 'RESTusername', 'RESTpassword', processRequest);
+callRouting.createListener(config, processRequest);
 
 function processRequest(callData){
   response = {
