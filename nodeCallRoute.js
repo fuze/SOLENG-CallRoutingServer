@@ -1,12 +1,39 @@
 module.exports = {
-  createListener: function createListener(port, username, password, routingFunction) {
-    var http = require('http');
-    var fs = require('fs');
-    var querystring = require('querystring');
+  createListener: function createListener(config, routingFunction) {
+    var useHttps = config.https
+    var port = config.port
+    var username = config.user
+    var password = config.password
 
-    var server = http.createServer(function(req, res) {
-console.log('server request')
-console.log(req.headers);
+    var httpServer
+    var options
+    var fs = require('fs');
+    if (useHttps) {
+      httpServer = require('https')
+
+      if (config.https_key_path && config.https_cert_path) {
+        options = {
+          key: fs.readFileSync(config.https_key_path, "utf8"),
+          cert: fs.readFileSync(config.https_cert_path, "utf8")
+        }
+        if (config.https_ca_path) {
+          options.ca = fs.readFileSync(config.https_ca_path, "utf8")
+        }
+      } else if (config.https_pfx_path && config.https_pfx_passphrase) {
+        options = {
+          pfx: fs.readFileSync(config.https_pfx_path, "utf8"),
+          passphrase: config.https_pfx_passphrase
+        }
+      } else {
+        throw new Error('No configured CERT for enabling SSL!')
+      }
+    } else {
+      httpServer = require('http');
+    }
+
+    var server = httpServer.createServer(options, function(req, res) {
+    console.log('server request')
+    console.log(req.headers);
       if (req.method == "POST"){ //check if we are being posted to
         if (verifyCredentials(req.headers.authorization, username, password)){
           console.log("got request. Method: POST")

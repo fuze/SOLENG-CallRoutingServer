@@ -13,6 +13,33 @@ The last argument you pass to the create listener function is your routing funct
 ### Example script
 ```
 const callRouting = require('./nodeCallRoute.js');
+// use http
+const config = {
+  https: 0,
+  port: 8009,
+  user: 'RESTusername',
+  password: 'RESTpassword'
+}
+
+// use https with key and cert
+//const config = {
+//  https: 1,
+//  https_key_path: '/path/to/key.pem',
+//  https_cert_path: '/path/to/cert.pem',
+//  port: 8009,
+//  user: 'RESTusername',
+//  password: 'RESTpassword'
+//}
+
+// use https with pfx
+//const config = {
+//  https: 1,
+//  https_pfx_path: '/path/to/cert.pfx',
+//  https_pfx_passphrase: 'passphrase',
+//  port: 8009,
+//  user: 'RESTusername',
+//  password: 'RESTpassword'
+//}
 callRouting.createListener(8009, 'RESTusername', 'RESTpassword', processRequest);
 
 function processRequest(callData){
