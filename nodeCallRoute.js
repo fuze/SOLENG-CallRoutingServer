@@ -99,13 +99,21 @@ function getXMLdata(data, callback){ // read the named file into a javascript ob
 };
 
 function getCallData(input, callback){ //get the data we need an make our call data object
-  var callData = {
-    requestID: input.TpnRequest.RequestId[0].trim(),
-    objectID: input.TpnRequest.CallInfo[0].ObjectId[0].trim(),
-    clid: input.TpnRequest.CallInfo[0].ClidNum[0].trim(),
-    idid: input.TpnRequest.CallInfo[0].Idid[0].trim(),
-    customAttributes: getCustomAttributes(input)
+  var callData = {}
+  if (input.TpnRequest.RequestId && input.TpnRequest.RequestId.length) {
+    callData.requestID = input.TpnRequest.RequestId[0].trim()
   }
+
+  if (input.TpnRequest.CallInfo && input.TpnRequest.CallInfo.length) {
+    if (input.TpnRequest.CallInfo[0].ClidNum && input.TpnRequest.CallInfo[0].ClidNum.length) {
+      callData.clid = input.TpnRequest.CallInfo[0].ClidNum[0].trim()
+    }
+
+    if (input.TpnRequest.CallInfo[0].Idid && input.TpnRequest.CallInfo[0].Idid.length) {
+      callData.idid = input.TpnRequest.CallInfo[0].Idid[0].trim()
+    }
+  }
+  callData.customAttributes = getCustomAttributes(input)
   return callData
 };
 
