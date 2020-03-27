@@ -48,7 +48,10 @@ function processRequest(callData){
       "RequestId" : callData.requestID,
       "CallActions" : {
         "ObjectId" : callData.objectID,
-        "SetCallerId" : null,
+        "SetCallerId" : {
+          "ClidNum" : null,
+          "ClidName" : null
+        },
         "RouteCall" : {
           "Ivr" : null,
           "Exten" : null
