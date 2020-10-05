@@ -32,11 +32,11 @@ module.exports = {
     }
 
     var server = httpServer.createServer(options, function(req, res) {
-    console.log('server request')
-    console.log(req.headers);
+    // console.log('server request')
+    // console.log(req.headers);
       if (req.method == "POST"){ //check if we are being posted to
         if (verifyCredentials(req.headers.authorization, username, password)){
-          console.log("got request. Method: POST")
+          // console.log("got request. Method: POST")
           req.on('data', function(data) {
             res.writeHead(200)
             getXMLdata(data, async function(reqObject){
@@ -51,7 +51,7 @@ module.exports = {
           res.end("error while authenticating")
         }
       } else {  //if this is a GET request, do manual testing
-        console.log("got request. Method: NOT POST")
+        // console.log("got request. Method: NOT POST")
         res.writeHead(200)
         var reqObject = fs.readFile("sample.xml", function(err, data) {
           getXMLdata(data, async function(reqObject){
@@ -99,6 +99,8 @@ function getXMLdata(data, callback){ // read the named file into a javascript ob
 };
 
 function getCallData(input, callback){ //get the data we need an make our call data object
+  // console.log('getCallData:input');
+  // console.log(JSON.stringify(input, null, 4));
   var callData = {}
   if (input.TpnRequest.RequestId && input.TpnRequest.RequestId.length) {
     callData.requestID = input.TpnRequest.RequestId[0].trim()
@@ -111,6 +113,22 @@ function getCallData(input, callback){ //get the data we need an make our call d
 
     if (input.TpnRequest.CallInfo[0].Idid && input.TpnRequest.CallInfo[0].Idid.length) {
       callData.idid = input.TpnRequest.CallInfo[0].Idid[0].trim()
+    }
+
+    if (input.TpnRequest.CallInfo[0].ClidName && input.TpnRequest.CallInfo[0].ClidName.length) {
+      callData.clidname = input.TpnRequest.CallInfo[0].Idid[0].trim()
+    }
+
+    if (input.TpnRequest.CallInfo[0].CurContext && input.TpnRequest.CallInfo[0].CurContext.length) {
+      callData.curcontext = input.TpnRequest.CallInfo[0].CurContext[0].trim()
+    }
+
+    if (input.TpnRequest.CallInfo[0].CurExten && input.TpnRequest.CallInfo[0].CurExten.length) {
+      callData.curexten = input.TpnRequest.CallInfo[0].CurExten[0].trim()
+    }
+
+    if (input.TpnRequest.CallInfo[0].TimeStamp && input.TpnRequest.CallInfo[0].TimeStamp.length) {
+      callData.timestamp = input.TpnRequest.CallInfo[0].TimeStamp[0].trim()
     }
   }
   callData.customAttributes = getCustomAttributes(input)
