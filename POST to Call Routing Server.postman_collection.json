@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "df75bef7-8084-4657-a7c7-8556d9aa139f",
+		"name": "POST to Call Routing Server",
+		"description": "This collection of POST requests simulates the POST requests made by Fuze's call servers.\n\nIt requires 3 variables\nscript_server - The ip or hostname to send POST requests to\nusername - username used for basic authentication\npassword - password used for basic authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Call with DTMF",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n  <TpnRequest>\n    <RequestId>1553708147923</RequestId>\n<CallInfo>\n<TimeStamp>1553708147923</TimeStamp>\n<ObjectId>call:Ym9zLXoyNC1jYWxsMS0xNTUzNzA4MTM4LjE5MzY5Mw==</ObjectId>\n<ClidNum>7033031234</ClidNum>\n<ClidName>Someone I Know</ClidName>\n<Idid>8552677044</Idid>\n<CurContext>solengdbos-some-context</CurContext>\n<CurExten>start</CurExten>\n<CustomAttributes>\n  <Attribute>\n    <Name>IdPin</Name>\n    <Value>47588</Value>\n  </Attribute>\n</CustomAttributes>\n</CallInfo>\n</TpnRequest>"
+				},
+				"url": {
+					"raw": "http://{{script_server}}/",
+					"protocol": "http",
+					"host": [
+						"{{script_server}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Route Request",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n  <TpnRequest>\n    <RequestId>1553708147923</RequestId>\n<CallInfo>\n<TimeStamp>1553708147923</TimeStamp>\n<ObjectId>call:Ym9zLXoyNC1jYWxsMS0xNTUzNzA4MTM4LjE5MzY5Mw==</ObjectId>\n<ClidNum>7033036299</ClidNum>\n<ClidName>Someone I Know</ClidName>\n<Idid>16146075632</Idid>\n<CurContext>solengdbos-some-context</CurContext>\n<CurExten>start</CurExten>\n<CustomAttributes>\n  <Attribute>\n    <Name></Name>\n    <Value></Value>\n  </Attribute>\n</CustomAttributes>\n</CallInfo>\n</TpnRequest>"
+				},
+				"url": {
+					"raw": "http://{{script_server}}/",
+					"protocol": "http",
+					"host": [
+						"{{script_server}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5847fbce-0b3f-40f1-b048-fd51b403c793",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f83bff89-77f5-498f-965e-5d8ce07ce372",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
